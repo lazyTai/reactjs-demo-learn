@@ -1,0 +1,63 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>component</title>
+</head>
+<body>
+<div class="wrapper"></div>
+
+
+<script>
+    class Component {
+        setState(state){
+            /*出去旧的*/
+            const oldEl=this.el;
+            document.querySelector('.wrapper').removeChild(oldEl)
+
+            this.state=state;
+            /*根据新的state，生产新的el*/
+            this.el = this._renderDom()
+            document.querySelector('.wrapper').appendChild(this.el)
+        }
+        createDOMFromString(domString)  {
+            const div = document.createElement('div')
+            div.innerHTML = domString
+            return div
+        }
+        _renderDom(){
+            this.el=this.createDOMFromString(this.render());
+            /*事件*/
+            this.el.addEventListener('click',this.onClick.bind(this),false)
+            return this.el;
+        }
+    }
+
+
+
+    /*使用*/
+    class LikeButton extends  Component{
+        constructor (){
+            super()
+            this.state={isLiked:false}
+        }
+        onClick(){
+            this.setState({isLiked:!this.state.isLiked})
+        }
+        render(){
+            return `
+        <button class="LikedButton">
+         <span class='like-text'>${this.state.isLiked ? '取消' : '点赞'}</span>
+          <span>👍</span>
+        </button>
+        `
+        }
+    }
+
+
+    document.querySelector('.wrapper').appendChild(new LikeButton()._renderDom())
+</script>
+</body>
+</html>
