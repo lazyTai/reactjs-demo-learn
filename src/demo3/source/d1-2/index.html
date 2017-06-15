@@ -1,0 +1,58 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>d1-2</title>
+</head>
+<body>
+
+<div class="wrapper">
+    <!--<button class='like-btn'>
+        <span class='like-text'>${this.state.isLiked ? '取消' : '点赞'}</span>
+        <span>👍</span>
+    </button>-->
+</div>
+
+<script>
+    // ::String => ::Document
+    const createDOMFromString = (domString) => {
+        const div = document.createElement('div')
+        div.innerHTML = domString
+        return div
+    }
+
+    class Button{
+        constructor(){
+            /*data*/
+            this.state={isLiked:false}
+        }
+        /*view*/
+        render(){
+            this.el=createDOMFromString(
+                `<button class='like-btn'>
+                      <span class='like-text'>${this.state.isLiked ? '取消' : '点赞'}</span>
+                      <span>👍</span>
+                </button>`)
+            this.el.addEventListener('click', this.changeLikeText.bind(this), false)
+            return this.el
+        }
+        changeLikeText(){
+            this.setState({
+                isLiked: !this.state.isLiked
+            })
+        }
+        setState(state){
+            var oldEl=this.el;
+            document.querySelector('.wrapper').removeChild(oldEl)
+            this.state=state;
+            this.el=this.render()
+            document.querySelector('.wrapper').appendChild(this.el)
+        }
+    }
+
+    document.querySelector('.wrapper').appendChild(new Button().render())
+</script>
+</body>
+</html>
