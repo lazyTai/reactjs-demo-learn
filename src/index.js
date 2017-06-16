@@ -11,7 +11,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 // import App from './demo6-bindActionCreators/app.js'
 
-import App from './demo7-asysc-actions/app.js'
+/*import App from './demo7-asysc-actions/app.js'
 import {Provider} from 'react-redux';
 import {createStore,applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
@@ -39,7 +39,15 @@ function reducer(state={num:1,success:''},action) {
 }
 
 
-const store=createStore(reducer,applyMiddleware(thunk))
+const store=createStore(reducer,applyMiddleware(thunk))*/
+
+import App from './demo9-reduser-slite/app.js'
+import reducer from './demo9-reduser-slite/reduces'
+ import {Provider} from 'react-redux';
+import {createStore,applyMiddleware} from 'redux'
+
+const store=createStore(reducer)
+
 ReactDOM.render( <Provider store={store}>
     <App></App>
 </Provider>, document.getElementById('root'))
