@@ -9,19 +9,25 @@ import registerServiceWorker from './registerServiceWorker';
 // ReactDOM.render(<App />, document.getElementById('root'))
 // registerServiceWorker();
 
-import configStore from './demo4-redux-configStore/stores'
-import {Provider} from 'react-redux'
-import {Router,Route} from 'react-router'
-import App from './demo4-redux-configStore/container/app.js'
+import App from './demo5-redux-fist/app.js'
+import {Provider} from 'react-redux';
+import {createStore} from 'redux'
+import {Map,fromJS} from 'immutable';
 
-
-const store =configStore()
-
+function reducer(state={num:0},action) {
+    var newState=state;
+    switch (action.type){
+        case 'add':
+            return Object.assign({},newState,{
+                num:newState.num+1
+            })
+            break;
+        default:
+            return state;
+    }
+}
+const store=createStore(reducer)
 ReactDOM.render( <Provider store={store}>
-    <Router>
-        <Route path="/" component={App}>
-            <Route path="/home"></Route>
-        </Route>
-    </Router>
+    <App></App>
 </Provider>, document.getElementById('root'))
 registerServiceWorker();
