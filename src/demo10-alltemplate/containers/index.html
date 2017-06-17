@@ -1,0 +1,131 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/underscore.js/1.8.3/underscore-min.js"></script>
+</head>
+<body>
+<style>
+    body,html{padding: 0;margin: 0}
+    .majian{
+        width: 40px;
+        height: 40px;
+        font-size: 12px;
+        border:solid 1px #eee;
+        background: green;
+        box-sizing: border-box;
+        padding: 5px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .majian-wrapper{position: relative;display: flex}
+
+    .majian-wrapper.old .majian{
+        position: absolute;
+        opacity: 0;
+    }
+    .majian-wrapper.old [data-state="noclick"]{
+        background: #00ea00;
+        z-index: 1;
+    }
+    .old{margin-right: 10px}
+</style>
+<div style="">
+    <div class="majian-wrapper old"></div>
+</div>
+
+
+
+<script>
+    var data={
+        oldList:[],
+        oldListLeftPos:[],
+        newListLeftPos:[]
+    }
+    /*
+    * 数据上生成麻将队列，麻将队列的默认排序，打乱排序
+    * */
+    function setData() {
+        _(10).times(function (n) {
+            var majian={
+                i:n,
+                left:n*40,
+                content:'麻'+n,
+                state:'noclick',
+                time:3
+            }
+            data.oldList.push(majian)
+        })
+
+
+        _(data.oldList.length).times(function (n) {
+            data.oldListLeftPos.push(n*40)
+        })
+
+        data.newListLeftPos= _.shuffle(data.oldListLeftPos)
+    }
+
+    /*
+    * 根据data 渲染view
+    * */
+    function render() {
+        /*生成麻将*/
+        _.each(data.oldList,function (item,n) {
+            $('.majian-wrapper.old').append(`<div class="majian" data-sort=${n} data-state="noclick">${item.content}</div>`)
+        })
+        /*设置旧的位置*/
+        _.each($('.majian-wrapper.old').children(),function (item,n) {
+            $(item).animate({
+                opacity:1,
+                left:data.oldListLeftPos[n]+'px'
+            })
+        })
+    }
+
+    /*打乱效果*/
+    function run() {
+        var count=0;
+        function show() {
+            /*跳出循环*/
+            if(count>=data.oldList.length){window.clearInterval(showInterval); return false}
+
+            var selectItem=data.oldList[count];
+            var $selectItem= $('.majian-wrapper.old').find(`[data-sort=${selectItem.i}]`)
+            $selectItem.animate({
+                opacity:1,
+                top:'80px',
+                left:data.newListLeftPos[count]+'px'/*位置从排乱数组里面拿*/
+            })
+            /*监听3秒之后消失*/
+            {
+                setTimeout(function () {
+                    if($selectItem.attr('data-state')=='noclick'){
+                        $selectItem.hide(300)
+                    }
+                },3000)
+            }
+            /*设置点击，不让消失*/
+            $('.majian-wrapper.old').find('.majian').unbind('click').click(function () {
+                var $majian= $(this)[0];
+                $majian.setAttribute('data-state','click')
+            })
+            count++;
+        }
+
+        var showInterval=setInterval(show,300);
+    }
+
+    setData()
+    render()
+    run()/*打乱效果*/
+
+
+
+
+</script>
+</body>
+</html>

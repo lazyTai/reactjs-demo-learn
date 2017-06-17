@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -41,14 +41,37 @@ function reducer(state={num:1,success:''},action) {
 
 const store=createStore(reducer,applyMiddleware(thunk))*/
 
-import App from './demo9-reduser-slite/app.js'
-import reducer from './demo9-reduser-slite/reduces'
+/*import App from './demo9-reduser-slite/app.js'
+ import reducer from './demo9-reduser-slite/reduces'
  import {Provider} from 'react-redux';
-import {createStore,applyMiddleware} from 'redux'
+ import {createStore,applyMiddleware} from 'redux'
 
-const store=createStore(reducer)
+ const store=createStore(reducer)
 
-ReactDOM.render( <Provider store={store}>
-    <App></App>
-</Provider>, document.getElementById('root'))
-registerServiceWorker();
+ ReactDOM.render( <Provider store={store}>
+ <App></App>
+ </Provider>, document.getElementById('root'))
+ registerServiceWorker();*/
+
+import React from 'react';
+import {render} from 'react-dom';
+import {Provider} from 'react-redux';
+import {Router,Route,browserHistory} from 'react-router'
+import configScore from './demo10-alltemplate/store';
+import routes from './demo10-alltemplate/routes'
+import reducer from './demo10-alltemplate/reducer'
+
+
+const store =configScore(reducer);
+
+
+
+
+
+render(<Provider store={store}>
+        <Router history={browserHistory} routes={routes}>
+        </Router>
+</Provider>,
+    document.getElementById('root')
+)
+
